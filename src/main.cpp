@@ -1,4 +1,4 @@
-#include <math.h>
+#include <cmath>
 #include <uWS/uWS.h>
 #include <iostream>
 #include <string>
@@ -17,10 +17,10 @@ double rad2deg(double x) { return x * 180 / pi(); }
 // Checks if the SocketIO event has JSON data.
 // If there is data the JSON object in string format will be returned,
 // else the empty string "" will be returned.
-string hasData(string s) {
+string hasData(const string& s) {
   auto found_null = s.find("null");
-  auto b1 = s.find_first_of("[");
-  auto b2 = s.find_last_of("]");
+  auto b1 = s.find_first_of('[');
+  auto b2 = s.find_last_of(']');
   if (found_null != string::npos) {
     return "";
   }
@@ -43,19 +43,19 @@ int main() {
     // "42" at the start of the message means there's a websocket message event.
     // The 4 signifies a websocket message
     // The 2 signifies a websocket event
-    if (length && length > 2 && data[0] == '4' && data[1] == '2') {
+    if (length > 2 && data[0] == '4' && data[1] == '2') {
       auto s = hasData(string(data).substr(0, length));
 
-      if (s != "") {
+      if (!s.empty()) {
         auto j = json::parse(s);
 
         string event = j[0].get<string>();
 
         if (event == "telemetry") {
           // j[1] is the data JSON object
-          double cte = std::stod(j[1]["cte"].get<string>());
-          double speed = std::stod(j[1]["speed"].get<string>());
-          double angle = std::stod(j[1]["steering_angle"].get<string>());
+          const double cte = std::stod(j[1]["cte"].get<string>());
+          const double speed = std::stod(j[1]["speed"].get<string>());
+          const double angle = std::stod(j[1]["steering_angle"].get<string>());
           double steer_value;
           /**
            * TODO: Calculate steering value here, remember the steering value is
