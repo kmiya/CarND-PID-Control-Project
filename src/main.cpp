@@ -9,11 +9,6 @@
 using nlohmann::json;
 using std::string;
 
-// For converting back and forth between radians and degrees.
-constexpr double pi() { return M_PI; }
-double deg2rad(double x) { return x * pi() / 180; }
-double rad2deg(double x) { return x * 180 / pi(); }
-
 // Checks if the SocketIO event has JSON data.
 // If there is data the JSON object in string format will be returned,
 // else the empty string "" will be returned.
@@ -55,8 +50,6 @@ int main() {
         if (event == "telemetry") {
           // j[1] is the data JSON object
           const double cte = std::stod(j[1]["cte"].get<string>());
-          const double speed = std::stod(j[1]["speed"].get<string>());
-          const double angle = std::stod(j[1]["steering_angle"].get<string>());
           /**
            * Calculate steering value here, remember the steering value is [-1, 1].
            * NOTE: Feel free to play around with the throttle and speed.
